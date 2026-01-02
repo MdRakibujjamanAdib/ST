@@ -65,33 +65,88 @@ const AudioSpectrum: React.FC<AudioSpectrumProps> = ({ audioRef }) => {
         analyser.getByteFrequencyData(dataArray);
 
         // Clear canvas
-        ctx.fillStyle = 'rgba(0, 0, 0, 0)';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const barWidth = (canvas.width / bufferLength) * 2.5;
-        let x = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-          const barHeight = (dataArray[i] / 255) * canvas.height * 0.8;
-
-          // Dark red gradient matching Stranger Things theme
-          const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
-          gradient.addColorStop(0, '#7f1d1d');
-          gradient.addColorStop(0.4, '#450a0a');
-          gradient.addColorStop(1, '#1a0000');
-
+        // Create organic vine-like wave visualization
+        const spacing = canvas.width / (bufferLength - 1);
+        
+        // Draw multiple layers for depth
+        for (let layer = 0; layer < 3; layer++) {
+          ctx.beginPath();
+          
+          for (let i = 0; i < bufferLength; i++) {
+            const x = i * spacing;
+            const value = dataArray[i] / 255;
+            const baseHeight = canvas.height * 0.5;
+            const amplitude = value * baseHeight * (0.8 - layer * 0.2);
+            const y = canvas.height - baseHeight - amplitude;
+            
+            // Add wave motion
+            const wave = Math.sin(i * 0.2 + Date.now() * 0.001) * 5;
+            
+            if (i === 0) {
+              ctx.moveTo(x, y + wave);
+            } else {
+              // Smooth curves between points for organic look
+              const prevX = (i - 1) * spacing;
+              const prevValue = dataArray[i - 1] / 255;
+              const prevAmplitude = prevValue * baseHeight * (0.8 - layer * 0.2);
+              const prevY = canvas.height - baseHeight - prevAmplitude;
+              const prevWave = Math.sin((i - 1) * 0.2 + Date.now() * 0.001) * 5;
+              
+              const cpX = (prevX + x) / 2;
+              const cpY = (prevY + prevWave + y + wave) / 2;
+              
+              ctx.quadraticCurveTo(cpX, cpY, x, y + wave);
+            }
+          }
+          
+          // Complete the vine shape by drawing back along the bottom
+          ctx.lineTo(canvas.width, canvas.height);
+          ctx.lineTo(0, canvas.height);
+          ctx.closePath();
+          
+          // Gradient for vine-like appearance
+          const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+          const opacity = 0.3 - layer * 0.08;
+          gradient.addColorStop(0, `rgba(127, 29, 29, ${opacity * 1.5})`);
+          gradient.addColorStop(0.3, `rgba(69, 10, 10, ${opacity})`);
+          gradient.addColorStop(1, `rgba(26, 0, 0, ${opacity * 0.5})`);
+          
           ctx.fillStyle = gradient;
+          ctx.fill();
           
-          // Add glow effect before drawing
-          ctx.shadowBlur = 15;
-          ctx.shadowColor = 'rgba(220, 38, 38, 0.8)';
+          // Add organic spine-like details
+          if (layer === 0) {
+            ctx.strokeStyle = `rgba(220, 38, 38, ${0.4})`;
+            ctx.lineWidth = 2;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = 'rgba(220, 38, 38, 0.6)';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
+        }
+        
+        // Add spine/tentacle details
+        for (let i = 0; i < bufferLength; i += 3) {
+          const x = i * spacing;
+          const value = dataArray[i] / 255;
           
-          ctx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
-
-          // Reset shadow for next bar
-          ctx.shadowBlur = 0;
-
-          x += barWidth;
+          if (value > 0.3) {
+            const spineHeight = value * 20 * (1 + Math.sin(i + Date.now() * 0.002));
+            const y = canvas.height - canvas.height * 0.5 - (value * canvas.height * 0.4);
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y - spineHeight);
+            ctx.strokeStyle = `rgba(139, 0, 0, ${value * 0.8})`;
+            ctx.lineWidth = 1 + value * 2;
+            ctx.lineCap = 'round';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = 'rgba(220, 38, 38, 0.8)';
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
         }
       };
 
