@@ -16,27 +16,31 @@ const AudioSpectrum: React.FC<AudioSpectrumProps> = ({ audioRef }) => {
     const canvas = canvasRef.current;
     if (!audio || !canvas) return;
 
-    let sourceNode: MediaElementAudioSourceNode | null = null;
-
     const initAudioContext = () => {
       try {
         // Create audio context only once
         if (!audioContextRef.current) {
           audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-        }
-
-        const audioContext = audioContextRef.current;
-
-        // Create analyser only once
-        if (!analyserRef.current) {
-          analyserRef.current = audioContext.createAnalyser();
-          analyserRef.current.fftSize = 128; // Lower for better performance
+          
+          // Create analyser
+          analyserRef.current = audioContextRef.current.createAnalyser();
+          analyserRef.current.fftSize = 128;
           analyserRef.current.smoothingTimeConstant = 0.8;
 
-          // Connect audio source to analyser
-          sourceNode = audioContext.createMediaElementSource(audio);
-          sourceNode.connect(analyserRef.current);
-          analyserRef.current.connect(audioContext.destination);
+          // Connect audio source - only create source once
+          try {
+            const sourceNode = audioContextRef.current.createMediaElementSource(audio);
+            sourceNode.connect(analyserRef.current);
+            analyserRef.current.connect(audioContextRef.current.destination);
+          } catch (error) {
+            // Source already connected, just connect to destination
+            console.log('Audio source already connected');
+          }
+        }
+
+        // Resume context if suspended
+        if (audioContextRef.current.state === 'suspended') {
+          audioContextRef.current.resume();
         }
 
         visualize();
