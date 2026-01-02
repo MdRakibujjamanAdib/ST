@@ -1,55 +1,89 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Atmosphere from './components/Atmosphere';
 import GlitchText from './components/GlitchText';
 import StrangerButton from './components/StrangerButton';
-import { Download } from 'lucide-react';
+import { Download, Volume2, VolumeX } from 'lucide-react';
 import { RESUME_DATA } from './constants';
 import { motion } from 'framer-motion';
 
 const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const toggleAudio = async () => {
+    if (audioRef.current) {
+      try {
+        if (isPlaying) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          await audioRef.current.play();
+          setIsPlaying(true);
+        }
+      } catch (error) {
+        console.log('Audio toggle error:', error);
+      }
+    }
+  };
 
   useEffect(() => {
-    const playAudio = async () => {
-      if (audioRef.current) {
+    const handleFirstInteraction = async () => {
+      if (audioRef.current && !isPlaying) {
         try {
-          // Try to play immediately
           await audioRef.current.play();
+          setIsPlaying(true);
         } catch (error) {
-          // If autoplay is blocked, play on any user interaction
-          const handleInteraction = async () => {
-            try {
-              await audioRef.current?.play();
-              // Remove listeners after successful play
-              document.removeEventListener('click', handleInteraction);
-              document.removeEventListener('touchstart', handleInteraction);
-              document.removeEventListener('keydown', handleInteraction);
-            } catch (err) {
-              console.log('Audio play failed:', err);
-            }
-          };
-          
-          document.addEventListener('click', handleInteraction);
-          document.addEventListener('touchstart', handleInteraction);
-          document.addEventListener('keydown', handleInteraction);
+          console.log('Autoplay blocked:', error);
         }
       }
     };
+
+    // Try to play after a short delay
+    const timer = setTimeout(handleFirstInteraction, 500);
+
+    // Also try on first user interaction
+    document.addEventListener('click', handleFirstInteraction, { once: true });
     
-    // Small delay to ensure audio element is ready
-    const timer = setTimeout(playAudio, 100);
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('click', handleFirstInteraction);
+    };
+  }, [isPlaying]);
 
   return (
     <div className="min-h-screen text-gray-200 selection:bg-red-900 selection:text-white overflow-x-hidden">
       <Atmosphere />
 
       {/* Background Music */}
-      <audio ref={audioRef} loop preload="auto">
+      <audio ref={audioRef} loop preload="auto" playsInline>
         <source src="/audio.mp3" type="audio/mpeg" />
-        <source src="/audio.mp3" type="audio/mp3" />
       </audio>
+
+      {/* Audio Control Button */}
+      <motion.button
+        onClick={toggleAudio}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="fixed top-4 right-4 z-50 p-3 bg-black/70 border border-red-900/60 rounded-lg hover:bg-red-950/70 hover:border-red-600 transition-all duration-300 group backdrop-blur-sm"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        title={isPlaying ? "Mute audio" : "Play audio"}
+      >
+        <motion.div
+          animate={{ 
+            opacity: !isPlaying ? [0.5, 1, 0.5] : 1,
+          }}
+          transition={{ duration: 1.5, repeat: !isPlaying ? Infinity : 0 }}
+        >
+          {isPlaying ? (
+            <Volume2 className="w-5 h-5 text-red-500 group-hover:text-red-400 transition-colors" />
+          ) : (
+            <VolumeX className="w-5 h-5 text-gray-400 group-hover:text-red-400 transition-colors" />
+          )}
+        </motion.div>
+        <div className="absolute inset-0 rounded-lg bg-red-500/20 opacity-0 group-hover:opacity-100 transition-opacity blur-sm -z-10" />
+      </motion.button>
 
       {/* --- HERO SECTION --- */}
       <header className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 z-10">
