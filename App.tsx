@@ -10,19 +10,20 @@ const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const toggleAudio = async () => {
-    if (audioRef.current) {
-      try {
-        if (isPlaying) {
-          audioRef.current.pause();
-          setIsPlaying(false);
-        } else {
-          await audioRef.current.play();
-          setIsPlaying(true);
-        }
-      } catch (error) {
-        console.log('Audio toggle error:', error);
-      }
+  const toggleAudio = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.play().then(() => {
+        setIsPlaying(true);
+      }).catch(err => {
+        console.log('Play error:', err);
+        setIsPlaying(false);
+      });
+    } else {
+      audio.pause();
+      setIsPlaying(false);
     }
   };
 
@@ -33,35 +34,27 @@ const App: React.FC = () => {
     // Sync state with actual playback
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
     
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
-    audio.addEventListener('ended', handlePause);
+    audio.addEventListener('ended', handleEnded);
 
-    const handleFirstInteraction = async () => {
-      if (!isPlaying) {
-        try {
-          await audio.play();
-        } catch (error) {
-          console.log('Autoplay blocked:', error);
-        }
-      }
+    // Try autoplay once
+    const tryAutoplay = () => {
+      audio.play().catch(() => {
+        // Autoplay blocked, wait for user interaction
+      });
     };
 
-    // Try to play after a short delay
-    const timer = setTimeout(handleFirstInteraction, 500);
-
-    // Also try on first user interaction
-    document.addEventListener('click', handleFirstInteraction, { once: true });
+    setTimeout(tryAutoplay, 500);
     
     return () => {
-      clearTimeout(timer);
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
-      audio.removeEventListener('ended', handlePause);
-      document.removeEventListener('click', handleFirstInteraction);
+      audio.removeEventListener('ended', handleEnded);
     };
-  }, [isPlaying]);
+  }, []);
 
   return (
     <div className="min-h-screen text-gray-200 selection:bg-red-900 selection:text-white overflow-x-hidden">
