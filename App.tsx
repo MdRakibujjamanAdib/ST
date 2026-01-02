@@ -27,11 +27,21 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // Sync state with actual playback
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handlePause);
+
     const handleFirstInteraction = async () => {
-      if (audioRef.current && !isPlaying) {
+      if (!isPlaying) {
         try {
-          await audioRef.current.play();
-          setIsPlaying(true);
+          await audio.play();
         } catch (error) {
           console.log('Autoplay blocked:', error);
         }
@@ -46,6 +56,9 @@ const App: React.FC = () => {
     
     return () => {
       clearTimeout(timer);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handlePause);
       document.removeEventListener('click', handleFirstInteraction);
     };
   }, [isPlaying]);
