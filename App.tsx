@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Atmosphere from './components/Atmosphere';
 import GlitchText from './components/GlitchText';
 import StrangerButton from './components/StrangerButton';
+import AudioSpectrum from './components/AudioSpectrum';
 import { Download, Volume2, VolumeX } from 'lucide-react';
 import { RESUME_DATA } from './constants';
 import { motion } from 'framer-motion';
@@ -57,7 +58,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen text-gray-200 selection:bg-red-900 selection:text-white overflow-x-hidden">
+    <div className="h-screen w-screen text-gray-200 selection:bg-red-900 selection:text-white overflow-hidden fixed inset-0">
       <Atmosphere />
 
       {/* Background Music */}
@@ -92,7 +93,7 @@ const App: React.FC = () => {
       </motion.button>
 
       {/* --- HERO SECTION --- */}
-      <header className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 z-10">
+      <header className="relative h-full w-full flex flex-col items-center justify-center text-center px-4 z-10">
          {/* Intense flickering light overlay */}
          <motion.div 
             className="absolute inset-0 bg-red-500 pointer-events-none mix-blend-overlay"
@@ -284,6 +285,9 @@ const App: React.FC = () => {
            ))}
          </motion.div>
       </header>
+
+      {/* Audio Spectrum Visualizer */}
+      <AudioSpectrum audioRef={audioRef} />
     </div>
   );
 };
