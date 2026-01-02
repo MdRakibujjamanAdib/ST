@@ -10,17 +10,35 @@ const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    const playAudio = () => {
+    const playAudio = async () => {
       if (audioRef.current) {
-        audioRef.current.play().catch(() => {
-          // Retry on user interaction
-          document.addEventListener('click', () => {
-            audioRef.current?.play();
-          }, { once: true });
-        });
+        try {
+          // Try to play immediately
+          await audioRef.current.play();
+        } catch (error) {
+          // If autoplay is blocked, play on any user interaction
+          const handleInteraction = async () => {
+            try {
+              await audioRef.current?.play();
+              // Remove listeners after successful play
+              document.removeEventListener('click', handleInteraction);
+              document.removeEventListener('touchstart', handleInteraction);
+              document.removeEventListener('keydown', handleInteraction);
+            } catch (err) {
+              console.log('Audio play failed:', err);
+            }
+          };
+          
+          document.addEventListener('click', handleInteraction);
+          document.addEventListener('touchstart', handleInteraction);
+          document.addEventListener('keydown', handleInteraction);
+        }
       }
     };
-    playAudio();
+    
+    // Small delay to ensure audio element is ready
+    const timer = setTimeout(playAudio, 100);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -28,8 +46,9 @@ const App: React.FC = () => {
       <Atmosphere />
 
       {/* Background Music */}
-      <audio ref={audioRef} loop autoPlay>
+      <audio ref={audioRef} loop preload="auto">
         <source src="/audio.mp3" type="audio/mpeg" />
+        <source src="/audio.mp3" type="audio/mp3" />
       </audio>
 
       {/* --- HERO SECTION --- */}
