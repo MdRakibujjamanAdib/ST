@@ -59,8 +59,8 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen w-screen text-gray-200 selection:bg-red-900 selection:text-white overflow-hidden fixed inset-0">
-      {/* Dark overlay to blend with background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70 z-0" />
+      {/* Subtle vignette overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 z-0" />
       <Atmosphere />
 
       {/* Background Music */}
@@ -96,8 +96,6 @@ const App: React.FC = () => {
 
       {/* --- HERO SECTION --- */}
       <header className="relative h-full w-full flex flex-col items-center justify-center text-center px-4 z-10">
-         {/* Content backdrop for readability */}
-         <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] z-0" />
          {/* Intense flickering light overlay */}
          <motion.div 
             className="absolute inset-0 bg-red-500 pointer-events-none mix-blend-overlay z-0"
