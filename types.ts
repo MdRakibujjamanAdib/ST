@@ -30,3 +30,14 @@ export interface Language {
   language: string;
   proficiency: string; // e.g., C2, Native
 }
+
+export interface Project {
+  id: string;
+  title: string;
+  role: string;
+  year: string;
+  description: string;
+  technologies: string[];
+  link?: string;
+  features: string[];
+}

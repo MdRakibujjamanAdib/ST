@@ -7,8 +7,9 @@ import ExperienceSection from './components/ExperienceSection';
 import EducationSection from './components/EducationSection';
 import SkillsSection from './components/SkillsSection';
 import AwardsSection from './components/AwardsSection';
+import ProjectsSection from './components/ProjectsSection';
 import { Download, Volume2, VolumeX, Mail, MapPin, Globe, ChevronDown } from 'lucide-react';
-import { RESUME_DATA, EXPERIENCE_DATA, EDUCATION_DATA, SKILLS_DATA, AWARDS_DATA, LANGUAGES_DATA } from './constants';
+import { RESUME_DATA, EXPERIENCE_DATA, EDUCATION_DATA, SKILLS_DATA, AWARDS_DATA, LANGUAGES_DATA, PROJECTS_DATA } from './constants';
 import { motion } from 'framer-motion';
 
 const App: React.FC = () => {
@@ -220,7 +221,7 @@ const App: React.FC = () => {
                 }}
               />
               <GlitchText 
-                text={RESUME_DATA.name.toUpperCase()} 
+                text="ADIB" 
                 as="h1" 
                 className="font-horror text-6xl sm:text-8xl md:text-9xl lg:text-[12rem] xl:text-[16rem] tracking-wider text-red-600 drop-shadow-[0_0_10px_rgba(220,38,38,0.8)] leading-tight relative"
               />
@@ -321,6 +322,9 @@ const App: React.FC = () => {
 
           {/* Skills */}
           <SkillsSection skills={SKILLS_DATA} />
+
+          {/* Projects */}
+          <ProjectsSection projects={PROJECTS_DATA} />
 
           {/* Awards */}
           <AwardsSection awards={AWARDS_DATA} />

@@ -1,12 +1,13 @@
-import { Education, Experience, SkillCategory, Award, Language } from './types';
+import { Education, Experience, SkillCategory, Award, Language, Project } from './types';
 
 export const RESUME_DATA = {
-  name: "Adib",
-  title: "Creative Technologist | 3D Artist | AI Developer",
-  tagline: "A professional profile from the Upside Down.",
-  email: "adib@example.com", // Placeholder
-  website: "www.adibs.tech",
-  location: "Dhaka, Bangladesh",
+  name: "Md Rakibujjaman Adib",
+  title: "Social Media Manager | Community Manager | Creative Technologist",
+  tagline: "Creative, detail-oriented, and highly adaptable with hands-on experience in social media management, community engagement, and AI-powered creative platforms.",
+  email: "adizaman71@gmail.com",
+  website: "www.mctlabs.tech",
+  location: "Daffodil Smart City, Birulia, Savar, Bangladesh",
+  phone: "(+880) 1303031080",
   pdfLink: "/cv.pdf",
 };
 
@@ -16,59 +17,67 @@ export const EDUCATION_DATA: Education[] = [
     degree: "BSc in Multimedia and Creative Technology",
     institution: "Daffodil International University",
     year: "2020 - 2024",
-    description: "Focus on 3D Computer Graphics, HCI, and Interactive Systems.",
-  },
-  {
-    id: "edu2",
-    degree: "Higher Secondary Certificate",
-    institution: "Dhaka College",
-    year: "2018 - 2020",
-    description: "Science concentration.",
+    description: "Final Grade: 3.95 - Focus on creative development, AI integration, and digital content creation.",
   }
 ];
 
 export const EXPERIENCE_DATA: Experience[] = [
   {
     id: "exp1",
-    title: "Creative Technologist & UI/UX Designer",
-    organization: "TechVerse Solutions",
-    duration: "2023 - Present",
+    title: "Social Media Manager",
+    organization: "Garena Free Fire - Bangladesh",
+    duration: "Nov 2020 - Nov 2024",
     responsibilities: [
-      "Designed immersive user interfaces for VR/AR applications.",
-      "Developed React-based web platforms integrating 3D assets.",
-      "Collaborated with AI teams to visualize neural network outputs."
+      "Managed and moderated social media platforms while gathering community feedback for management.",
+      "Proactively collected user feedback and responded to inquiries professionally across social channels.",
+      "Engaged with diverse players through WhatsApp groups and Facebook Messenger to understand preferences.",
+      "Built and maintained relationships with Free Fire communities through social media channels.",
+      "Served as vital link between community and internal teams, offering localized knowledge and insights.",
+      "Participated in game localization, partner evaluation, and copywriting projects."
     ]
   },
   {
     id: "exp2",
-    title: "3D Artist (Freelance)",
-    organization: "Global Clients",
-    duration: "2021 - 2023",
+    title: "Anti-Hack Associate",
+    organization: "Garena Free Fire - India",
+    duration: "Mar 2022 - Jan 2024",
     responsibilities: [
-      "Created high-fidelity 3D assets for game environments.",
-      "Optimized models for web-based rendering (Three.js/R3F).",
-      "Delivered cinematic motion graphics for branding."
+      "Checked hack files and programs to identify unauthorized game modifications.",
+      "Explored and documented new hacks and listed hacking-related content creators for action.",
+      "Monitored everything related to hacking and unauthorized modifications in Bangladesh and India.",
+      "Helped improve the anti-hack system to provide the best gaming experience."
     ]
   }
 ];
 
 export const SKILLS_DATA: SkillCategory[] = [
   {
-    category: "Technical Skills",
+    category: "Creative & Design Skills",
     skills: [
-      { name: "React / TypeScript", level: 90 },
-      { name: "Three.js / WebGL", level: 85 },
-      { name: "Python / AI Integration", level: 75 },
-      { name: "Tailwind CSS", level: 95 }
+      { name: "Autodesk Maya & 3D Max", level: 85 },
+      { name: "V-Ray Rendering", level: 80 },
+      { name: "Adobe Creative Suite", level: 90 },
+      { name: "Motion Graphics", level: 85 },
+      { name: "Graphic Design", level: 90 }
     ]
   },
   {
-    category: "Creative Skills",
+    category: "Technical Skills",
     skills: [
-      { name: "3D Modeling (Blender)", level: 90 },
-      { name: "UI/UX Design (Figma)", level: 85 },
-      { name: "Motion Graphics", level: 80 },
-      { name: "Video Editing", level: 70 }
+      { name: "React & Next.js", level: 88 },
+      { name: "Supabase & Backend Development", level: 80 },
+      { name: "Prompt Engineering", level: 85 },
+      { name: "AI Integration", level: 82 }
+    ]
+  },
+  {
+    category: "Management & Communication",
+    skills: [
+      { name: "Social Media Management", level: 95 },
+      { name: "Content Marketing Strategy", level: 90 },
+      { name: "Community Management", level: 95 },
+      { name: "Creative Writing", level: 88 },
+      { name: "Communication", level: 92 }
     ]
   }
 ];
@@ -76,19 +85,40 @@ export const SKILLS_DATA: SkillCategory[] = [
 export const AWARDS_DATA: Award[] = [
   {
     id: "aw1",
-    title: "Best Creative Tech Project",
-    year: "2023",
-    description: "Awarded for 'Neural Visions', an AI-driven art installation."
+    title: "Champion - Pixel to Program: MCT Programming Contest",
+    year: "Fall 2024",
+    description: "Achieved 1st place in the department-wide programming contest organized by the Department of Multimedia and Creative Technology, DIU. Demonstrated strong problem-solving skills, logic building, and coding proficiency."
   },
   {
     id: "aw2",
-    title: "Hackathon Champion: UI/UX",
-    year: "2022",
-    description: "First place in National University Hackathon for accessible design."
+    title: "MCT Labs AI - Founder & Lead Developer",
+    year: "2024",
+    description: "Created an innovative AI-powered creative suite (mctlabs.tech) with modules for Chat, Canvas (image gen), Motion (video gen), Builder, Coder, 3D, and Echo AI assistant. Built using React, Next.js, and Supabase."
   }
 ];
 
 export const LANGUAGES_DATA: Language[] = [
-  { language: "English", proficiency: "C1 (Proficient User)" },
   { language: "Bengali", proficiency: "Native Speaker" },
+  { language: "English", proficiency: "B2-C1 (Independent to Proficient User)" },
+];
+
+export const PROJECTS_DATA: Project[] = [
+  {
+    id: "proj1",
+    title: "MCT Labs AI",
+    role: "Founder & Lead Developer",
+    year: "2024 - Present",
+    description: "An innovative AI-powered creative suite designed to assist professionals in multimedia, design, and development. Built using React, Next.js, Supabase, and custom backend hosted on Xet.one.",
+    technologies: ["React", "Next.js", "Supabase", "AI Models", "TypeScript"],
+    link: "https://www.mctlabs.tech/",
+    features: [
+      "Chat: Creative writing and assistant tasks",
+      "Canvas: AI image generation",
+      "MCT Motion: AI video generation",
+      "Builder: Real-time HTML, CSS, and JavaScript development",
+      "Coder: AI-based code execution and debugging",
+      "3D: 3D model generation",
+      "Echo: Persona-based AI assistant (teachers, historical figures, leaders)"
+    ]
+  }
 ];
