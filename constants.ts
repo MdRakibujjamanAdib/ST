@@ -5,7 +5,7 @@ export const RESUME_DATA = {
   title: "Social Media Manager | Community Manager | Creative Technologist",
   tagline: "Creative, detail-oriented, and highly adaptable with hands-on experience in social media management, community engagement, and AI-powered creative platforms.",
   email: "adizaman71@gmail.com",
-  website: "www.mctlabs.tech",
+  website: "adibx.me",
   location: "Daffodil Smart City, Birulia, Savar, Bangladesh",
   phone: "(+880) 1303031080",
   pdfLink: "/cv.pdf",
@@ -93,7 +93,7 @@ export const AWARDS_DATA: Award[] = [
     id: "aw2",
     title: "MCT Labs AI - Founder & Lead Developer",
     year: "2024",
-    description: "Created an innovative AI-powered creative suite (mctlabs.tech) with modules for Chat, Canvas (image gen), Motion (video gen), Builder, Coder, 3D, and Echo AI assistant. Built using React, Next.js, and Supabase."
+    description: "Created an innovative AI-powered creative suite (mctlabs.tech) with modules for Chat, Canvas (image gen), Motion (video gen), Builder, Coder, 3D, and Echo AI assistant. Built using React, Next.js, and Supabase. Personal portfolio at adibx.me."
   }
 ];
 
