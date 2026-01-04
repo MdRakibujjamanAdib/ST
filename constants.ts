@@ -7,7 +7,7 @@ export const RESUME_DATA = {
   email: "adib@example.com", // Placeholder
   website: "www.adibs.tech",
   location: "Dhaka, Bangladesh",
-  pdfLink: "https://www.adibs.tech/cv.pdf",
+  pdfLink: "/cv.pdf",
 };
 
 export const EDUCATION_DATA: Education[] = [
